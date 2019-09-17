@@ -26,6 +26,7 @@
 import Alert from "@/components/Alert";
 import Banner from "@/components/Banner";
 import Slide from "@/components/Slide";
+//import { Banner, Slide } from "../dist/Banner";
 export default {
   name: "App",
   data() {

@@ -4,6 +4,10 @@ module.exports = {
   mode: "production",
   output: {
     path: pathLib.resolve(__dirname, "../dist"),
-    filename: "Banner.js"
+    filename: "Banner.js",
+    libraryTarget: "umd"
+  },
+  externals: {
+    vue: "vue"
   }
 };

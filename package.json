@@ -18,7 +18,7 @@
   "author": "$vinsurs <2407232109@qq.com>",
   "repositoty": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Vinsurs/vue-banner-better"
   },
   "license": "ISC",
   "devDependencies": {
