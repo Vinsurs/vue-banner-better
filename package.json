@@ -1,6 +1,6 @@
 {
   "name": "vue-banner-better",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "better banner component for vue.js",
   "main": "dist/Banner.js",
   "private": false,
@@ -16,7 +16,11 @@
     "vue-banner-better"
   ],
   "author": "$vinsurs <2407232109@qq.com>",
-  "repositoty": {
+  "bugs": {
+    "url": "https://github.com/Vinsurs/vue-banner-better/issues",
+    "email": "2407232109@qq.com"
+  },
+  "repository": {
     "type": "git",
     "url": "https://github.com/Vinsurs/vue-banner-better"
   },
