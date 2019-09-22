@@ -18,23 +18,23 @@
     <div class="pagination" :style="{'justify-content':pagination.align}">
       <ul v-if="pagination.apply&&slideCount" class="list">
         <li
-          v-for="(v,i) in Array(autoplay.mode=='loop'?slideCount-2:slideCount)"
+          v-for="(v,i) in Array(mode=='loop'?slideCount-2:slideCount)"
           :key="i"
           :class="['indicator',pagination.type,i==cur-1?pagination.activeClassName:'']"
-          @click="(pagination.clickable&&autoplay.mode!='loop')?go(i):''"
+          @click="(pagination.clickable&&mode!='loop')?go(i):''"
           :style="{backgroundColor:pagination.indicator.bgColor,color:pagination.indicator.color}"
         >{{pagination.indicator.showCounter?i+1:''}}</li>
       </ul>
     </div>
     <div
       class="nav left-arrow"
-      @click="autoplay.mode=='loop'?prevLoop():prev()"
-      v-show="autoplay.mode!='loop'?(showNavigation&&activeIndex!=0):true"
+      @click="mode=='loop'?prevLoop():prev()"
+      v-show="mode!='loop'?(showNavigation&&activeIndex!=0):true"
     ></div>
     <div
       class="nav right-arrow"
-      @click="autoplay.mode=='loop'?nextLoop():next()"
-      v-show="autoplay.mode!='loop'?(showNavigation&&activeIndex!=slideCount-1):true"
+      @click="mode=='loop'?nextLoop():next()"
+      v-show="mode!='loop'?(showNavigation&&activeIndex!=slideCount-1):true"
     ></div>
   </div>
 </template>
@@ -48,8 +48,8 @@ export default {
       timer: null,
       slideCount: 0,
       flag: true,
-      stopTransition: false,
-      loopcurindex: 0
+      loopcurindex: 1,
+      stopTransition: false
     };
   },
   props: {
@@ -69,17 +69,21 @@ export default {
       type: String,
       default: "500ms"
     },
+    mode: {
+      type: String,
+      default: "alternate",
+      validator(val) {
+        return ["alternate", "loop"].includes(val);
+      }
+    },
+
     autoplay: {
       type: Object,
       default() {
         return {
-          interval: "2000",
-          apply: true,
-          mode: "alternate"
+          interval: 2000,
+          apply: true
         };
-      },
-      validator(val) {
-        return ["alternate", "loop"].includes(val.mode);
       }
     },
     effect: {
@@ -129,7 +133,7 @@ export default {
       return this.containerWidth * this.slideCount;
     },
     cur() {
-      return this.$props.autoplay.mode == "loop"
+      return this.$props.mode == "loop"
         ? this.loopcurindex
         : this.activeIndex + 1;
     }
@@ -139,17 +143,17 @@ export default {
       case "slide":
         let banner = this.$refs.banner;
         this.containerWidth = banner.parentNode.offsetWidth;
-        if (this.autoplay.apply) {
-          if (this.autoplay.mode == "loop") {
-            let aSlide = banner.children;
-            banner.appendChild(aSlide[0].cloneNode(true));
-            banner.insertBefore(
-              aSlide[aSlide.length - 2].cloneNode(true),
-              aSlide[0]
-            );
-            //this.slideCount = banner.children.length;
-            this.activeIndex = 1;
-          }
+        if (this.mode == "loop") {
+          let aSlide = banner.children;
+          banner.appendChild(aSlide[0].cloneNode(true));
+          banner.insertBefore(
+            aSlide[aSlide.length - 2].cloneNode(true),
+            aSlide[0]
+          );
+          //this.slideCount = banner.children.length;
+          this.activeIndex = 1;
+        }
+        if (this.autoplay.apply == true) {
           this.start();
         }
         this.slideCount = banner.children.length;
@@ -167,6 +171,7 @@ export default {
     start() {
       this.cancel();
       this.timer = setInterval(this.move.bind(this), this.autoplay.interval);
+      console.log("aaa");
     },
     cancel() {
       clearInterval(this.timer);
@@ -175,10 +180,12 @@ export default {
       this.cancel();
     },
     out() {
-      this.start();
+      if (this.autoplay.apply == true) {
+        this.start();
+      }
     },
     move() {
-      switch (this.autoplay.mode) {
+      switch (this.mode) {
         case "loop":
           this.nextLoop();
           break;
@@ -203,6 +210,12 @@ export default {
        *      3                      1
        * slideCount=5
        */
+      this.$refs.banner.removeEventListener(
+        "transitionend",
+        this.TREnd1,
+        false
+      );
+
       if (this.activeIndex == 1) {
         this.stopTransition = false;
       }
@@ -211,9 +224,16 @@ export default {
       this.loopcurindex = n;
       if (n == this.slideCount - 1) {
         this.loopcurindex = 1;
-        this.stopTransition = true;
-        this.go(1);
+        this.$refs.banner.addEventListener("transitionend", this.TREnd1, false);
       }
+    },
+    TREnd1() {
+      this.stopTransition = true;
+      this.go(1);
+    },
+    TREnd2() {
+      this.stopTransition = true;
+      this.go(this.slideCount - 2);
     },
     prevLoop() {
       /**
@@ -222,16 +242,37 @@ export default {
        *      3                      1
        * slideCount=5
        */
-      if (this.activeIndex == 3) {
+      // this.$refs.banner.removeEventListener(
+      //   "transitionend",
+      //   this.TREnd2,
+      //   false
+      // );
+      // if (this.activeIndex == this.slideCount - 2) {
+      //   this.stopTransition = false;
+      // }
+      // let n = this.activeIndex - 1;
+      // this.go(n);
+      // this.loopcurindex = n;
+      // if (n == 0) {
+      //   this.loopcurindex = this.slideCount - 2;
+      //   this.$refs.banner.addEventListener("transitionend", this.TREnd2, false);
+      // }
+
+      this.$refs.banner.removeEventListener(
+        "transitionend",
+        this.TREnd2,
+        false
+      );
+
+      if (this.activeIndex == this.slideCount - 2) {
         this.stopTransition = false;
       }
       let n = this.activeIndex - 1;
       this.go(n);
       this.loopcurindex = n;
       if (n == 0) {
-        this.loopcurindex = 3;
-        this.stopTransition = true;
-        this.go(3);
+        this.loopcurindex = this.slideCount - 2;
+        this.$refs.banner.addEventListener("transitionend", this.TREnd2, false);
       }
     },
     prev() {
@@ -261,9 +302,11 @@ export default {
     go(i) {
       this.cancel();
       this.activeIndex = i;
-      this.$nextTick(() => {
-        this.start();
-      });
+      if (this.autoplay.apply == true) {
+        this.$nextTick(() => {
+          this.start();
+        });
+      }
     }
   }
 };

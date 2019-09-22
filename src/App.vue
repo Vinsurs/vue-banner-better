@@ -15,10 +15,11 @@
       :pagination="pagination"
       show-navigation
       disable-on-hover
+      mode="loop"
     >
-      <Slide>0</Slide>
       <Slide>1</Slide>
       <Slide>2</Slide>
+      <Slide>3</Slide>
     </Banner>
   </div>
 </template>
@@ -44,9 +45,8 @@ export default {
         }
       },
       autoplay: {
-        interval: "2000",
-        apply: true,
-        mode: "loop"
+        interval: 2000,
+        apply: false
       }
     };
   },

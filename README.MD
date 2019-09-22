@@ -24,6 +24,7 @@ in your `template`:
       :pagination="pagination"
       show-navigation
       disable-on-hover
+      mode="loop"
     >
       <Slide>0</Slide>
       <Slide>1</Slide>
@@ -52,13 +53,11 @@ export default {
       },
       autoplay: {
         interval: "2000",
-        apply: true,
-        mode: "loop"
+        apply: true
       }
     };
   },
   components: {
-    Alert,
     Banner,
     Slide
   }
@@ -73,7 +72,8 @@ export default {
 |     bordered     | `Boolean` |                                                                                    `true`                                                                                    |                                                                                                                                                                                                             if true,the Banner component have 1px outline                                                                                                                                                                                                             |
 |     duration     | `String`  |                                                                                  `"500ms"`                                                                                   |                                                                                                                                                                                                              set the Banner component animation duration                                                                                                                                                                                                              |
 |      effect      | `String`  |                                                                                  `"slide"`                                                                                   |                                                                                                                                                                                             set the Banner component animation effect:Temporarily only supported "slide"                                                                                                                                                                                              |
-|     autoplay     | `Object`  |                                                             `{interval: "2000", apply: true, mode: "alternate"}`                                                             |                                                                                                                                                    Set whether to play automatically :{  `interval`:Set the motion interval,`apply`:Set whether to enable autoplay,`mode`:"loop"\|"alternate" Set the sport mode }                                                                                                                                                    |
+|     autoplay     | `Object`  |                                                                      `{interval: "2000", apply: true}`                                                                       |                                                                                                                                                                           Set whether to play automatically :{  `interval`:Set the motion interval,`apply`:Set whether to enable autoplay }                                                                                                                                                                           |
+|       mode       | `String`  |                                                                                `'alternate'`                                                                                 |                                                                                                                                                                                                             `mode`:"loop"\|"alternate" Set the sport mode                                                                                                                                                                                                             |
 |    pagination    | `Object`  | `apply: true,align: "center",clickable: true,activeClassName: "active",type: "square",indicator: {          bgColor: "rgb(76, 0, 255)", color: "black", showCounter: false}` | Set pagination style :{  `apply`:Whether to enable pagination,`align`:"start"\|"center"\|"end"  Set the pager position,`clickable`:"Set whether the pager can be clicked",`activeClassName`:set the active indicator className,`type`:"bar"\|"square"\|"circle" set the shape of indicators,`bgColor`:set the backgoundColor of indicators,`color`:set the inner counter fontColor when set `showCounter` value to `true`,`showCounter`:Whether to display the count} |
 | show-navigation  | `Boolean` |                                                                                     true                                                                                     |                                                                                                                                                                                                                     Whether to display navigation                                                                                                                                                                                                                     |
 | disable-on-hover | `Boolean` |                                                                                     true                                                                                     |                                                                                                                                                                                                      Whether to disable the banner when setting the mouse hover                                                                                                                                                                                                       |
