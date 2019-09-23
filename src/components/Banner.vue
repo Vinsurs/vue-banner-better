@@ -171,7 +171,6 @@ export default {
     start() {
       this.cancel();
       this.timer = setInterval(this.move.bind(this), this.autoplay.interval);
-      console.log("aaa");
     },
     cancel() {
       clearInterval(this.timer);

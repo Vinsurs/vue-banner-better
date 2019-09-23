@@ -5,21 +5,16 @@
       <i>Alert</i> Component below.
     </p>
     <Alert />
-    <Banner
-      width="400px"
-      height="300px"
-      bordered
-      duration="500ms"
-      :autoplay="autoplay"
-      effect="slide"
-      :pagination="pagination"
-      show-navigation
-      disable-on-hover
-      mode="loop"
-    >
-      <Slide>1</Slide>
-      <Slide>2</Slide>
-      <Slide>3</Slide>
+    <Banner mode="loop" disable-on-hover>
+      <Slide>
+        <img src="./assets/1.jpg" />
+      </Slide>
+      <Slide>
+        <img src="./assets/2.jpg" />
+      </Slide>
+      <Slide>
+        <img src="./assets/3.jpg" />
+      </Slide>
     </Banner>
   </div>
 </template>
@@ -46,7 +41,7 @@ export default {
       },
       autoplay: {
         interval: 2000,
-        apply: false
+        apply: true
       }
     };
   },
