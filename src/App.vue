@@ -5,7 +5,14 @@
       <i>Alert</i> Component below.
     </p>
     <Alert />
-    <Banner mode="loop" disable-on-hover>
+    <Banner
+      mode="alternate"
+      disable-on-hover
+      width="800px"
+      height="600px"
+      :bordered="false"
+      :pagination="{apply:true,align:'start'}"
+    >
       <Slide>
         <img src="./assets/1.jpg" />
       </Slide>
@@ -20,31 +27,11 @@
 </template>
 <script>
 import Alert from "@/components/Alert";
-import Banner from "@/components/Banner";
-import Slide from "@/components/Slide";
-//import { Banner, Slide } from "../dist/Banner";
+//import Banner from "@/components/Banner";
+//import Slide from "@/components/Slide";
+import { Banner, Slide } from "../dist/Banner";
 export default {
   name: "App",
-  data() {
-    return {
-      pagination: {
-        apply: true,
-        align: "center",
-        clickable: true,
-        activeClassName: "active",
-        type: "bar",
-        indicator: {
-          bgColor: "rgb(76, 0, 255)",
-          color: "black",
-          showCounter: true
-        }
-      },
-      autoplay: {
-        interval: 2000,
-        apply: true
-      }
-    };
-  },
   components: {
     Alert,
     Banner,

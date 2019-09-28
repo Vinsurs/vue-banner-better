@@ -1,5 +1,6 @@
 <template>
   <div
+    v-cloak
     class="container"
     :style="{width,height}"
     :class="bordered?'bordered':''"
@@ -15,15 +16,18 @@
       <slot></slot>
     </div>
 
-    <div class="pagination" :style="{'justify-content':pagination.align}">
-      <ul v-if="pagination.apply&&slideCount" class="list">
+    <div
+      class="pagination"
+      :style="{'justify-content':PAGINATION.align!='center'?'flex-'+PAGINATION.align:'center'}"
+    >
+      <ul v-if="PAGINATION.apply&&slideCount" class="list">
         <li
           v-for="(v,i) in Array(mode=='loop'?slideCount-2:slideCount)"
           :key="i"
-          :class="['indicator',pagination.type,i==cur-1?pagination.activeClassName:'']"
-          @click="(pagination.clickable&&mode!='loop')?go(i):''"
-          :style="{backgroundColor:pagination.indicator.bgColor,color:pagination.indicator.color}"
-        >{{pagination.indicator.showCounter?i+1:''}}</li>
+          :class="['indicator',PAGINATION.type,i==cur-1?PAGINATION.activeClassName:'']"
+          @click="(PAGINATION.clickable&&mode!='loop')?go(i):''"
+          :style="{backgroundColor:PAGINATION.indicator.bgColor,color:PAGINATION.indicator.color}"
+        >{{PAGINATION.indicator.showCounter?i+1:''}}</li>
       </ul>
     </div>
     <div
@@ -49,8 +53,36 @@ export default {
       slideCount: 0,
       flag: true,
       loopcurindex: 1,
-      stopTransition: false
+      stopTransition: false,
+      AUTOPLAY: {},
+      PAGINATION: {}
     };
+  },
+  beforeMount() {
+    this.AUTOPLAY = Object.assign(
+      {},
+      {
+        interval: 2000,
+        apply: true
+      },
+      this.$props.autoplay
+    );
+    this.PAGINATION = Object.assign(
+      {},
+      {
+        apply: true,
+        align: "center",
+        clickable: true,
+        activeClassName: "active",
+        type: "square",
+        indicator: {
+          bgColor: "rgb(76, 0, 255)",
+          color: "black",
+          showCounter: false
+        }
+      },
+      this.$props.pagination
+    );
   },
   props: {
     width: {
@@ -79,11 +111,14 @@ export default {
 
     autoplay: {
       type: Object,
-      default() {
-        return {
-          interval: 2000,
-          apply: true
-        };
+      validator(v) {
+        let has = v.apply !== undefined;
+        let type = typeof v.apply == "boolean";
+        if (!(has && type))
+          throw new TypeError(
+            `the parameter 'apply' is required but received undefined`
+          );
+        return true;
       }
     },
     effect: {
@@ -95,25 +130,19 @@ export default {
     },
     pagination: {
       type: Object,
-      default() {
-        return {
-          apply: true,
-          align: "center",
-          clickable: true,
-          activeClassName: "active",
-          type: "square",
-          indicator: {
-            bgColor: "rgb(76, 0, 255)",
-            color: "black",
-            showCounter: false
-          }
-        };
-      },
       validator(val) {
-        return (
-          ["bar", "circle", "square"].includes(val.type) &&
-          ["center", "start", "end"].includes(val.align)
-        );
+        let has = val.apply !== undefined;
+        let type = typeof val.apply == "boolean";
+        if (!(has && type))
+          throw new TypeError(
+            `the parameter 'apply' is required but received undefined`
+          );
+        if (val.type || val.align)
+          return (
+            ["bar", "circle", "square"].includes(val.type) ||
+            ["center", "start", "end"].includes(val.align)
+          );
+        return true;
       }
     },
     "show-navigation": {
@@ -150,10 +179,9 @@ export default {
             aSlide[aSlide.length - 2].cloneNode(true),
             aSlide[0]
           );
-          //this.slideCount = banner.children.length;
           this.activeIndex = 1;
         }
-        if (this.autoplay.apply == true) {
+        if (this.AUTOPLAY.apply == true) {
           this.start();
         }
         this.slideCount = banner.children.length;
@@ -170,7 +198,7 @@ export default {
   methods: {
     start() {
       this.cancel();
-      this.timer = setInterval(this.move.bind(this), this.autoplay.interval);
+      this.timer = setInterval(this.move.bind(this), this.AUTOPLAY.interval);
     },
     cancel() {
       clearInterval(this.timer);
@@ -179,7 +207,7 @@ export default {
       this.cancel();
     },
     out() {
-      if (this.autoplay.apply == true) {
+      if (this.AUTOPLAY.apply == true) {
         this.start();
       }
     },
@@ -203,12 +231,6 @@ export default {
       this.go(n);
     },
     nextLoop() {
-      /**
-       * index 0 1 2
-       * i    0     1     2    3     4
-       *      3                      1
-       * slideCount=5
-       */
       this.$refs.banner.removeEventListener(
         "transitionend",
         this.TREnd1,
@@ -235,28 +257,6 @@ export default {
       this.go(this.slideCount - 2);
     },
     prevLoop() {
-      /**
-       * index 0 1 2
-       * i    0     1     2    3     4
-       *      3                      1
-       * slideCount=5
-       */
-      // this.$refs.banner.removeEventListener(
-      //   "transitionend",
-      //   this.TREnd2,
-      //   false
-      // );
-      // if (this.activeIndex == this.slideCount - 2) {
-      //   this.stopTransition = false;
-      // }
-      // let n = this.activeIndex - 1;
-      // this.go(n);
-      // this.loopcurindex = n;
-      // if (n == 0) {
-      //   this.loopcurindex = this.slideCount - 2;
-      //   this.$refs.banner.addEventListener("transitionend", this.TREnd2, false);
-      // }
-
       this.$refs.banner.removeEventListener(
         "transitionend",
         this.TREnd2,
@@ -276,9 +276,6 @@ export default {
     },
     prev() {
       let n = this.activeIndex - 1;
-      //   if (n == -1) {
-      //     n = this.slideCount - 1;
-      //   }
       this.go(n);
     },
     alternate() {
@@ -301,7 +298,7 @@ export default {
     go(i) {
       this.cancel();
       this.activeIndex = i;
-      if (this.autoplay.apply == true) {
+      if (this.AUTOPLAY.apply == true) {
         this.$nextTick(() => {
           this.start();
         });
@@ -311,6 +308,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+[v-cloak] {
+  display: none;
+}
 .bordered {
   outline: 1px solid black;
 }
@@ -323,7 +323,6 @@ export default {
   .wrapper {
     position: relative;
     height: 100%;
-    //width: 1200px;
     display: flex;
     flex-direction: row;
     transform: translateX(0);

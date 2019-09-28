@@ -26,9 +26,15 @@ in your `template`:
       disable-on-hover
       mode="loop"
     >
-      <Slide>0</Slide>
-      <Slide>1</Slide>
-      <Slide>2</Slide>
+      <Slide>
+        <img src="./assets/1.jpg" />
+      </Slide>
+      <Slide>
+        <img src="./assets/2.jpg" />
+      </Slide>
+      <Slide>
+        <img src="./assets/3.jpg" />
+      </Slide>
 </Banner>
 ``` 
 in your `script`:
@@ -71,8 +77,8 @@ export default {
 |      height      | `String`  |                                                                                  `"300px"`                                                                                   |                                                                                                                                                                                                                 set the height of component "Banner"                                                                                                                                                                                                                  |
 |     bordered     | `Boolean` |                                                                                    `true`                                                                                    |                                                                                                                                                                                                             if true,the Banner component have 1px outline                                                                                                                                                                                                             |
 |     duration     | `String`  |                                                                                  `"500ms"`                                                                                   |                                                                                                                                                                                                              set the Banner component animation duration                                                                                                                                                                                                              |
-|      effect      | `String`  |                                                                                  `"slide"`                                                                                   |                                                                                                                                                                                             set the Banner component animation effect:Temporarily only supported "slide"                                                                                                                                                                                              |
-|     autoplay     | `Object`  |                                                                      `{interval: "2000", apply: true}`                                                                       |                                                                                                                                                                           Set whether to play automatically :{  `interval`:Set the motion interval,`apply`:Set whether to enable autoplay }                                                                                                                                                                           |
+|      effect      | `String`  |                                                                                  `"slide"`                                                                                   |                                                                                                                                                                                                set the Banner component animation ,Temporarily only supported "slide"                                                                                                                                                                                                 |
+|     autoplay     | `Object`  |                                                                       `{interval: 2000, apply: true}`                                                                        |                                                                                                                                                                           Set whether to play automatically :{  `interval`:Set the motion interval,`apply`:Set whether to enable autoplay }                                                                                                                                                                           |
 |       mode       | `String`  |                                                                                `'alternate'`                                                                                 |                                                                                                                                                                                                             `mode`:"loop"\|"alternate" Set the sport mode                                                                                                                                                                                                             |
 |    pagination    | `Object`  | `apply: true,align: "center",clickable: true,activeClassName: "active",type: "square",indicator: {          bgColor: "rgb(76, 0, 255)", color: "black", showCounter: false}` | Set pagination style :{  `apply`:Whether to enable pagination,`align`:"start"\|"center"\|"end"  Set the pager position,`clickable`:"Set whether the pager can be clicked",`activeClassName`:set the active indicator className,`type`:"bar"\|"square"\|"circle" set the shape of indicators,`bgColor`:set the backgoundColor of indicators,`color`:set the inner counter fontColor when set `showCounter` value to `true`,`showCounter`:Whether to display the count} |
 | show-navigation  | `Boolean` |                                                                                     true                                                                                     |                                                                                                                                                                                                                     Whether to display navigation                                                                                                                                                                                                                     |
@@ -80,8 +86,8 @@ export default {
 # MoreDetail
 If you want to learn more about `vue-banner-better`, you can visit our hosting project to [github](https://github.com/Vinsurs/vue-banner-better) 
 
-You can also clone and execute the following command: 
+You can also `git clone` and execute the following command: 
 ```javascript
 npm run start
 ```
- to run the project, and welcome to mention [issure](https://github.com/Vinsurs/vue-banner-better/issues)
+ to run the project, and welcome to mention [issure](https://github.com/Vinsurs/vue-banner-better/issues)!
