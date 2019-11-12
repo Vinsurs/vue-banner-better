@@ -50,7 +50,7 @@ export default {
       containerWidth: 0,
       activeIndex: 0,
       timer: null,
-      slideCount: 0,
+      slideCount: 100,
       flag: true,
       loopcurindex: 1,
       stopTransition: false,
@@ -63,10 +63,25 @@ export default {
       {},
       {
         interval: 2000,
-        apply: true
+        apply: false
       },
       this.$props.autoplay
     );
+    let { indicator } = this.$props.pagination;
+    let _indicator = {
+      bgColor: "rgb(76, 0, 255)",
+      color: "black",
+      showCounter: false
+    };
+    if (indicator) {
+      this.$props.pagination.indicator = Object.assign(
+        {},
+        _indicator,
+        indicator
+      );
+    } else {
+      this.$props.pagination.indicator = _indicator;
+    }
     this.PAGINATION = Object.assign(
       {},
       {
@@ -74,12 +89,7 @@ export default {
         align: "center",
         clickable: true,
         activeClassName: "active",
-        type: "square",
-        indicator: {
-          bgColor: "rgb(76, 0, 255)",
-          color: "black",
-          showCounter: false
-        }
+        type: "square"
       },
       this.$props.pagination
     );
@@ -121,13 +131,6 @@ export default {
         return true;
       }
     },
-    effect: {
-      type: String,
-      default: "slide",
-      validator(val) {
-        return ["slide", "fade"].includes(val);
-      }
-    },
     pagination: {
       type: Object,
       validator(val) {
@@ -142,6 +145,11 @@ export default {
             ["bar", "circle", "square"].includes(val.type) ||
             ["center", "start", "end"].includes(val.align)
           );
+        if (val.indicator && typeof val.indicator !== "object") {
+          throw new TypeError(
+            `the parameter'indicator' must be an object but received (${typeof val.indicator})`
+          );
+        }
         return true;
       }
     },
@@ -168,29 +176,18 @@ export default {
     }
   },
   mounted() {
-    switch (this.effect) {
-      case "slide":
-        let banner = this.$refs.banner;
-        this.containerWidth = banner.parentNode.offsetWidth;
-        if (this.mode == "loop") {
-          let aSlide = banner.children;
-          banner.appendChild(aSlide[0].cloneNode(true));
-          banner.insertBefore(
-            aSlide[aSlide.length - 2].cloneNode(true),
-            aSlide[0]
-          );
-          this.activeIndex = 1;
-        }
-        if (this.AUTOPLAY.apply == true) {
-          this.start();
-        }
-        this.slideCount = banner.children.length;
-        break;
-      default:
-        throw new ReferenceError(
-          `unknow swiper effect ${this.effect},consider use effect 'fade' or 'slide' instead.`
-        );
+    let banner = this.$refs.banner;
+    this.containerWidth = parseInt(this.width);
+    if (this.mode == "loop") {
+      let aSlide = banner.children;
+      banner.appendChild(aSlide[0].cloneNode(true));
+      banner.insertBefore(aSlide[aSlide.length - 2].cloneNode(true), aSlide[0]);
+      this.activeIndex = 1;
     }
+    if (this.AUTOPLAY.apply == true) {
+      this.start();
+    }
+    this.slideCount = banner.children.length;
   },
   beforeDestroy() {
     this.cancel();
@@ -307,7 +304,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 [v-cloak] {
   display: none;
 }

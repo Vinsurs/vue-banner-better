@@ -8,7 +8,7 @@ export default {
   name: "Slide"
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .slide :first-child {
   width: 100%;
   height: 100%;

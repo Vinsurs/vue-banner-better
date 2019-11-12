@@ -1,6 +1,6 @@
 {
   "name": "vue-banner-better",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "better banner component for vue.js",
   "main": "dist/Banner.js",
   "private": false,

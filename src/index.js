@@ -1,3 +1,8 @@
 import Banner from "@/components/Banner";
 import Slide from "@/components/Slide";
-export { Banner, Slide };
+export default {
+  install: Vue => {
+    Vue.component(Banner.name, Banner);
+    Vue.component(Slide.name, Slide);
+  }
+};

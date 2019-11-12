@@ -1,41 +1,46 @@
 <template>
   <div class="app">
-    <p>
-      show an
-      <i>Alert</i> Component below.
-    </p>
-    <Alert />
     <Banner
-      mode="alternate"
-      disable-on-hover
+      mode="loop"
       width="800px"
       height="600px"
       :bordered="false"
-      :pagination="{apply:true,align:'start'}"
+      :pagination="pagination"
+      :autoplay="{apply:true}"
     >
       <Slide>
-        <img src="./assets/1.jpg" />
+        <img
+          src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3750211471,3151515749&fm=26&gp=0.jpg"
+        />
       </Slide>
       <Slide>
-        <img src="./assets/2.jpg" />
+        <img
+          src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1085446177,1382949253&fm=26&gp=0.jpg"
+        />
       </Slide>
       <Slide>
-        <img src="./assets/3.jpg" />
+        <img
+          src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=297838807,2854555713&fm=26&gp=0.jpg"
+        />
       </Slide>
     </Banner>
   </div>
 </template>
 <script>
-import Alert from "@/components/Alert";
-//import Banner from "@/components/Banner";
-//import Slide from "@/components/Slide";
-import { Banner, Slide } from "../dist/Banner";
+// import Banner from "@/components/Banner";
+// import Slide from "@/components/Slide";
 export default {
   name: "App",
-  components: {
-    Alert,
-    Banner,
-    Slide
+  data: () => {
+    return {
+      pagination: {
+        apply: true,
+        indicator: {
+          color: "red",
+          showCounter: true
+        }
+      }
+    };
   }
 };
 </script>
