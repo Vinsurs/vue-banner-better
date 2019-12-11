@@ -1,18 +1,17 @@
 {
   "name": "vue-banner-better",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "better banner component for vue.js",
   "main": "dist/Banner.js",
   "private": false,
   "scripts": {
-    "start": "webpack-dev-server --env.development --open",
+    "start": "webpack-dev-server --env.development",
     "build": "webpack --env.production"
   },
   "keywords": [
     "vue",
-    "vue-swiper",
-    "vue-banner",
-    "vue-slide",
+    "swiper",
+    "banner",
     "vue-banner-better",
     "vue-ban"
   ],

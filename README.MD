@@ -20,15 +20,31 @@ npm install vue-banner-better -S
 
 # Usage
 
-in your `template`:
+First register `Banner` and `Slide` component in `main.js` file:
+
+```javascript
+import Vue from "vue";
+import App from "./App";
+// import banner plugin
+import Banner from "vue-banner-better";
+// use plugin
+Vue.use(Banner);
+
+new Vue({
+  el: "#root",
+  render: h => h(App)
+});
+```
+
+Then you can use their in your any `.vue` file:
 
 ```html
 <Banner
-  width="400px"
-  height="300px"
+  width="800px"
+  height="600px"
   bordered
   duration="500ms"
-  :autoplay="autoplay"
+  autoplay
   :pagination="pagination"
   show-navigation
   disable-on-hover
@@ -52,49 +68,25 @@ in your `template`:
 </Banner>
 ```
 
-in your `script`:
-
-`main.js`file
-
-```javascript
-import Vue from "vue";
-import App from "@/App";
-// import banner plugin
-import Banner from "vue-banner-better";
-// use plugin
-Vue.use(Banner);
-
-new Vue({
-  el: "#root",
-  render: h => h(App)
-});
-```
-
-in your any `.vue` file:
-
 ```javascript
 export default {
   data() {
     return {
-      pagination: {
+       pagination: {
         apply: true,
-        align: "center",
         clickable: true,
         activeClassName: "active",
-        type: "bar",
+        type: "circle",
         indicator: {
-          bgColor: "rgb(76, 0, 255)",
+          bgColor:"rgb(76, 0, 255)",
           color: "black",
-          showCounter: true
+          showCounter: true }
         }
-      },
-      autoplay: {
-        interval: "2000",
-        apply: true
-      }
     };
   }
 ```
+
+finally open your browser ,an amazing banner view is shown!
 
 # Api
 
@@ -102,17 +94,17 @@ export default {
 
 ## Properties
 
-|       Name       |   Type    |                                                                               Default                                                                               |                                                                                                                                                                                                                             Description                                                                                                                                                                                                                             |
-| :--------------: | :-------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|      width       | `String`  |                                                                              `"400px"`                                                                              |                                                                                                                                                                                                                 set the width of component "Banner"                                                                                                                                                                                                                 |
-|      height      | `String`  |                                                                              `"300px"`                                                                              |                                                                                                                                                                                                                set the height of component "Banner"                                                                                                                                                                                                                 |
-|     bordered     | `Boolean` |                                                                               `true`                                                                                |                                                                                                                                                                                                            if true,the Banner component have 1px outline                                                                                                                                                                                                            |
-|     duration     | `String`  |                                                                              `"500ms"`                                                                              |                                                                                                                                                                                                             set the Banner component animation duration                                                                                                                                                                                                             |
-|     autoplay     | `Object`  |                                                                   `{interval: 2000, apply: true}`                                                                   |                                                                                                                                                                          Set whether to play automatically :{ `interval`:Set the motion interval,`apply`:Set whether to enable autoplay }                                                                                                                                                                           |
-|       mode       | `String`  |                                                                            `'alternate'`                                                                            |                                                                                                                                                                                                            `mode`:"loop"\|"alternate" Set the sport mode                                                                                                                                                                                                            |
-|    pagination    | `Object`  | `apply: true,align: "center",clickable: true,activeClassName: "active",type: "square",indicator: { bgColor: "rgb(76, 0, 255)", color: "black", showCounter: false}` | Set pagination style :{ `apply`:Whether to enable pagination,`align`:"start"\|"center"\|"end" Set the pager position,`clickable`:"Set whether the pager can be clicked",`activeClassName`:set the active indicator className,`type`:"bar"\|"square"\|"circle" set the shape of indicators,`bgColor`:set the backgoundColor of indicators,`color`:set the inner counter fontColor when set `showCounter` value to `true`,`showCounter`:Whether to display the count} |
-| show-navigation  | `Boolean` |                                                                                true                                                                                 |                                                                                                                                                                                                                    Whether to display navigation                                                                                                                                                                                                                    |
-| disable-on-hover | `Boolean` |                                                                                false                                                                                |                                                                                                                                                                                                     Whether to disable the banner when setting the mouse hover                                                                                                                                                                                                      |
+|       Name       |        Type         | Default                                                                                                                                                                            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| :--------------: | :-----------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|      width       |      `String`       | `"400px"`                                                                                                                                                                          | set the width of component "Banner"                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|      height      |      `String`       | `"300px"`                                                                                                                                                                          | set the height of component "Banner"                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|     bordered     |      `Boolean`      | `true`                                                                                                                                                                             | if true,the Banner component have 1px outline                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|     duration     |      `String`       | `"500ms"`                                                                                                                                                                          | set the Banner component animation duration                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|     autoplay     | `Object`\|`Boolean` | `true\|false\|{ interval: 2000, apply: true }`                                                                                                                                     | Set whether to play automatically : { `interval`:Set the motion interval, `apply`:Set whether to enable autoplay }                                                                                                                                                                                                                                                                                                                                                  |
+|       mode       |      `String`       | `'alternate'`                                                                                                                                                                      | `mode`:"loop"\|"alternate" Set the sport mode                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|    pagination    | `Object`\|`Boolean` | `true\|false\|{apply: true,align: "center",clickable: true,activeClassName: "active",type: "square",indicator: { bgColor: "rgb(76, 0, 255)", color: "black", showCounter: false}}` | Set pagination style :{ `apply`:Whether to enable pagination,`align`:"start"\|"center"\|"end" Set the pager position,`clickable`:"Set whether the pager can be clicked",`activeClassName`:set the active indicator className,`type`:"bar"\|"square"\|"circle" set the shape of indicators,`bgColor`:set the backgoundColor of indicators,`color`:set the inner counter fontColor when set `showCounter` value to `true`,`showCounter`:Whether to display the count} |
+| show-navigation  |      `Boolean`      | `true`                                                                                                                                                                             | Whether to display navigation                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| disable-on-hover |      `Boolean`      | `false`                                                                                                                                                                            | Whether to disable the banner when setting the mouse hover                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 # MoreDetail
 

@@ -2,44 +2,60 @@
   <div
     v-cloak
     class="container"
-    :style="{width,height}"
-    :class="bordered?'bordered':''"
-    @mouseover="disableOnHover?over():''"
-    @mouseout="disableOnHover?out():''"
+    :style="{ width, height }"
+    :class="bordered ? 'bordered' : ''"
+    @mouseover="disableOnHover ? over() : ''"
+    @mouseout="disableOnHover ? out() : ''"
   >
     <div
       class="wrapper"
       ref="banner"
-      :style="{transform:`translateX(${offset}px)`,'transition-duration':stopTransition?'0s': duration,
-        width: `${wraperWidth}px`}"
+      :style="{
+        transform: `translateX(${offset}px)`,
+        'transition-duration': stopTransition ? '0s' : duration,
+        
+      }"
     >
       <slot></slot>
     </div>
 
     <div
       class="pagination"
-      :style="{'justify-content':PAGINATION.align!='center'?'flex-'+PAGINATION.align:'center'}"
+      :style="{
+        'justify-content':
+          PAGINATION.align != 'center' ? 'flex-' + PAGINATION.align : 'center'
+      }"
     >
-      <ul v-if="PAGINATION.apply&&slideCount" class="list">
+      <ul v-if="PAGINATION.apply && slideCount" class="list">
         <li
-          v-for="(v,i) in Array(mode=='loop'?slideCount-2:slideCount)"
+          v-for="(v, i) in Array(mode == 'loop' ? slideCount - 2 : slideCount)"
           :key="i"
-          :class="['indicator',PAGINATION.type,i==cur-1?PAGINATION.activeClassName:'']"
-          @click="(PAGINATION.clickable&&mode!='loop')?go(i):''"
-          :style="{backgroundColor:PAGINATION.indicator.bgColor,color:PAGINATION.indicator.color}"
-        >{{PAGINATION.indicator.showCounter?i+1:''}}</li>
+          :class="[
+            'indicator',
+            PAGINATION.clickable?'pointer':'',
+            PAGINATION.type,
+            i == cur - 1 ? PAGINATION.activeClassName : ''
+          ]"
+          @click="PAGINATION.clickable && mode != 'loop' ? go(i) : ''"
+          :style="{
+            backgroundColor: PAGINATION.indicator.bgColor,
+            color: PAGINATION.indicator.color
+          }"
+        >{{ PAGINATION.indicator.showCounter ? i + 1 : "" }}</li>
       </ul>
     </div>
     <div
       class="nav left-arrow"
-      @click="mode=='loop'?prevLoop():prev()"
-      v-show="mode!='loop'?(showNavigation&&activeIndex!=0):true"
-    ></div>
+      @click="mode == 'loop' ? prevLoop() : prev()"
+      v-show="mode != 'loop' ? showNavigation && activeIndex != 0 : true"
+    ><</div>
     <div
       class="nav right-arrow"
-      @click="mode=='loop'?nextLoop():next()"
-      v-show="mode!='loop'?(showNavigation&&activeIndex!=slideCount-1):true"
-    ></div>
+      @click="mode == 'loop' ? nextLoop() : next()"
+      v-show="
+        mode != 'loop' ? showNavigation && activeIndex != slideCount - 1 : true
+      "
+    >></div>
   </div>
 </template>
 <script>
@@ -50,7 +66,7 @@ export default {
       containerWidth: 0,
       activeIndex: 0,
       timer: null,
-      slideCount: 100,
+      slideCount: 20,
       flag: true,
       loopcurindex: 1,
       stopTransition: false,
@@ -59,40 +75,53 @@ export default {
     };
   },
   beforeMount() {
+    let autoplay = this.$props.autoplay;
     this.AUTOPLAY = Object.assign(
       {},
       {
         interval: 2000,
         apply: false
       },
-      this.$props.autoplay
+      typeof autoplay === "boolean" ? { apply: autoplay } : autoplay
     );
-    let { indicator } = this.$props.pagination;
-    let _indicator = {
-      bgColor: "rgb(76, 0, 255)",
-      color: "black",
-      showCounter: false
-    };
-    if (indicator) {
-      this.$props.pagination.indicator = Object.assign(
+    let pagination = this.$props.pagination;
+    if (typeof pagination === "object") {
+      let { indicator } = pagination;
+      let _indicator = {
+        bgColor: "#00cec9",
+        color: "black",
+        showCounter: false
+      };
+      if (indicator) {
+        pagination.indicator = Object.assign({}, _indicator, indicator);
+      } else {
+        pagination.indicator = _indicator;
+      }
+      this.PAGINATION = Object.assign(
         {},
-        _indicator,
-        indicator
+        {
+          apply: true,
+          align: "center",
+          clickable: true,
+          activeClassName: "active",
+          type: "square"
+        },
+        pagination
       );
-    } else {
-      this.$props.pagination.indicator = _indicator;
-    }
-    this.PAGINATION = Object.assign(
-      {},
-      {
+    } else if (typeof pagination === "boolean") {
+      this.PAGINATION = {
         apply: true,
         align: "center",
         clickable: true,
         activeClassName: "active",
-        type: "square"
-      },
-      this.$props.pagination
-    );
+        type: "square",
+        indicator: {
+          bgColor: "#00cec9",
+          color: "black",
+          showCounter: false
+        }
+      };
+    }
   },
   props: {
     width: {
@@ -120,35 +149,22 @@ export default {
     },
 
     autoplay: {
-      type: Object,
-      validator(v) {
-        let has = v.apply !== undefined;
-        let type = typeof v.apply == "boolean";
-        if (!(has && type))
-          throw new TypeError(
-            `the parameter 'apply' is required but received undefined`
-          );
-        return true;
-      }
+      type: [Object, Boolean]
     },
     pagination: {
-      type: Object,
+      type: [Object, Boolean],
       validator(val) {
-        let has = val.apply !== undefined;
-        let type = typeof val.apply == "boolean";
-        if (!(has && type))
-          throw new TypeError(
-            `the parameter 'apply' is required but received undefined`
-          );
-        if (val.type || val.align)
-          return (
-            ["bar", "circle", "square"].includes(val.type) ||
-            ["center", "start", "end"].includes(val.align)
-          );
-        if (val.indicator && typeof val.indicator !== "object") {
-          throw new TypeError(
-            `the parameter'indicator' must be an object but received (${typeof val.indicator})`
-          );
+        if (typeof val === "object") {
+          if (val.type || val.align)
+            return (
+              ["bar", "circle", "square"].includes(val.type) ||
+              ["center", "start", "end"].includes(val.align)
+            );
+          if (val.indicator && typeof val.indicator !== "object") {
+            throw new TypeError(
+              `the parameter'indicator' must be an object but received (${typeof val.indicator})`
+            );
+          }
         }
         return true;
       }
@@ -177,7 +193,7 @@ export default {
   },
   mounted() {
     let banner = this.$refs.banner;
-    this.containerWidth = parseInt(this.width);
+    this.containerWidth = banner.parentNode.offsetWidth;
     if (this.mode == "loop") {
       let aSlide = banner.children;
       banner.appendChild(aSlide[0].cloneNode(true));
@@ -188,9 +204,11 @@ export default {
       this.start();
     }
     this.slideCount = banner.children.length;
+    banner.style.width = `${this.wraperWidth}px`;
   },
   beforeDestroy() {
     this.cancel();
+    this.$refs.banner.removeEventListener("transitionend", this.TREnd, false);
   },
   methods: {
     start() {
@@ -212,6 +230,11 @@ export default {
       switch (this.mode) {
         case "loop":
           this.nextLoop();
+          this.$refs.banner.addEventListener(
+            "transitionend",
+            this.TREnd,
+            false
+          );
           break;
         case "alternate":
           this.alternate();
@@ -228,47 +251,41 @@ export default {
       this.go(n);
     },
     nextLoop() {
-      this.$refs.banner.removeEventListener(
-        "transitionend",
-        this.TREnd1,
-        false
-      );
-
       if (this.activeIndex == 1) {
         this.stopTransition = false;
       }
       let n = this.activeIndex + 1;
+      if (n >= 5) {
+        n = 1;
+      }
       this.go(n);
       this.loopcurindex = n;
       if (n == this.slideCount - 1) {
         this.loopcurindex = 1;
-        this.$refs.banner.addEventListener("transitionend", this.TREnd1, false);
       }
     },
-    TREnd1() {
-      this.stopTransition = true;
-      this.go(1);
-    },
-    TREnd2() {
-      this.stopTransition = true;
-      this.go(this.slideCount - 2);
+    TREnd() {
+      if (this.activeIndex == this.slideCount - 1) {
+        this.stopTransition = true;
+        this.activeIndex = 1;
+        this.start();
+      } else if (this.activeIndex <= 0) {
+        this.stopTransition = true;
+        this.activeIndex = this.slideCount - 2;
+      }
     },
     prevLoop() {
-      this.$refs.banner.removeEventListener(
-        "transitionend",
-        this.TREnd2,
-        false
-      );
-
       if (this.activeIndex == this.slideCount - 2) {
         this.stopTransition = false;
       }
       let n = this.activeIndex - 1;
+      if (n <= -1) {
+        n = this.slideCount - 2;
+      }
       this.go(n);
       this.loopcurindex = n;
-      if (n == 0) {
+      if (n <= 0) {
         this.loopcurindex = this.slideCount - 2;
-        this.$refs.banner.addEventListener("transitionend", this.TREnd2, false);
       }
     },
     prev() {
@@ -304,7 +321,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 [v-cloak] {
   display: none;
 }
@@ -355,7 +372,7 @@ export default {
         line-height: 1.2rem;
         font-size: 50%;
         &.active {
-          background: rgb(235, 167, 135) !important;
+          background-color: #fd79a8 !important;
         }
         &.square {
           border: none;
@@ -369,16 +386,21 @@ export default {
           line-height: 0.5rem;
           border-radius: 2px;
         }
+        &.pointer {
+          cursor: pointer;
+        }
       }
     }
   }
   .nav {
     position: absolute;
-    width: 0;
-    height: 0;
+    text-align: center;
+    width: 1.5rem;
+    height: 1.5rem;
     top: 50%;
     opacity: 0.1;
-    border: 1.5rem solid transparent;
+    background: #dddddd;
+    //border: 1.5rem solid transparent;
     transition: opacity 0.5s ease-in;
     cursor: pointer;
     &:hover {
@@ -388,13 +410,13 @@ export default {
 
   .nav.left-arrow {
     left: 0;
-    transform: translate(-1.5rem, -50%);
-    border-right-color: rgb(0, 68, 255);
+    transform: translate(15%, -50%);
+    //border-right-color: rgb(0, 68, 255);
   }
   .nav.right-arrow {
     right: 0;
-    transform: translate(1.5rem, -50%);
-    border-left-color: rgb(0, 68, 255);
+    transform: translate(-15%, -50%);
+    //border-left-color: rgb(0, 68, 255);
   }
 }
 </style>

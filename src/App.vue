@@ -1,12 +1,12 @@
 <template>
   <div class="app">
     <Banner
-      mode="loop"
-      width="800px"
-      height="600px"
+      mode="alternate"
+      width="100%"
+      height="100%"
       :bordered="false"
       :pagination="pagination"
-      :autoplay="{apply:true}"
+      autoplay
     >
       <Slide>
         <img
@@ -27,20 +27,30 @@
   </div>
 </template>
 <script>
-// import Banner from "@/components/Banner";
-// import Slide from "@/components/Slide";
+import Banner from "@/components/Banner";
+import Slide from "@/components/Slide";
 export default {
   name: "App",
   data: () => {
     return {
       pagination: {
         apply: true,
+        type: "circle",
         indicator: {
-          color: "red",
           showCounter: true
         }
       }
     };
+  },
+  components: {
+    Banner,
+    Slide
   }
 };
 </script>
+<style>
+.app {
+  width: 400px;
+  height: 300px;
+}
+</style>
