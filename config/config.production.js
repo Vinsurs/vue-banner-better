@@ -4,10 +4,11 @@ module.exports = {
   mode: "production",
   output: {
     path: pathLib.resolve(__dirname, "../dist"),
-    filename: "Banner.js",
+    filename: "Swiper.js",
     libraryTarget: "umd"
   },
   externals: {
     vue: "vue"
-  }
+  },
+  devtool: "source-map"
 };

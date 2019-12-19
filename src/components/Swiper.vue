@@ -12,8 +12,7 @@
       ref="banner"
       :style="{
         transform: `translateX(${offset}px)`,
-        'transition-duration': stopTransition ? '0s' : duration,
-        
+        'transition-duration': stopTransition ? '0s' : duration
       }"
     >
       <slot></slot>
@@ -32,7 +31,7 @@
           :key="i"
           :class="[
             'indicator',
-            PAGINATION.clickable?'pointer':'',
+            PAGINATION.clickable ? 'pointer' : '',
             PAGINATION.type,
             i == cur - 1 ? PAGINATION.activeClassName : ''
           ]"
@@ -41,26 +40,32 @@
             backgroundColor: PAGINATION.indicator.bgColor,
             color: PAGINATION.indicator.color
           }"
-        >{{ PAGINATION.indicator.showCounter ? i + 1 : "" }}</li>
+        >
+          {{ PAGINATION.indicator.showCounter ? i + 1 : "" }}
+        </li>
       </ul>
     </div>
     <div
       class="nav left-arrow"
       @click="mode == 'loop' ? prevLoop() : prev()"
       v-show="mode != 'loop' ? showNavigation && activeIndex != 0 : true"
-    ><</div>
+    >
+      <
+    </div>
     <div
       class="nav right-arrow"
       @click="mode == 'loop' ? nextLoop() : next()"
       v-show="
         mode != 'loop' ? showNavigation && activeIndex != slideCount - 1 : true
       "
-    >></div>
+    >
+      >
+    </div>
   </div>
 </template>
 <script>
 export default {
-  name: "Banner",
+  name: "Swiper",
   data() {
     return {
       containerWidth: 0,
@@ -79,7 +84,7 @@ export default {
     this.AUTOPLAY = Object.assign(
       {},
       {
-        interval: 2000,
+        interval: 3000,
         apply: false
       },
       typeof autoplay === "boolean" ? { apply: autoplay } : autoplay
@@ -88,7 +93,7 @@ export default {
     if (typeof pagination === "object") {
       let { indicator } = pagination;
       let _indicator = {
-        bgColor: "#00cec9",
+        bgColor: "transparent",
         color: "black",
         showCounter: false
       };
@@ -116,7 +121,7 @@ export default {
         activeClassName: "active",
         type: "square",
         indicator: {
-          bgColor: "#00cec9",
+          bgColor: "transparent",
           color: "black",
           showCounter: false
         }
@@ -334,6 +339,9 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
   padding: 0;
+  &:hover .nav {
+    opacity: 1;
+  }
   .wrapper {
     position: relative;
     height: 100%;
@@ -371,8 +379,9 @@ export default {
         text-align: center;
         line-height: 1.2rem;
         font-size: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.6);
         &.active {
-          background-color: #fd79a8 !important;
+          background-color: #0c40eb !important;
         }
         &.square {
           border: none;
@@ -395,28 +404,27 @@ export default {
   .nav {
     position: absolute;
     text-align: center;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
     top: 50%;
     opacity: 0.1;
-    background: #dddddd;
-    //border: 1.5rem solid transparent;
+    background: rgba(0, 0, 0, 0.3);
     transition: opacity 0.5s ease-in;
     cursor: pointer;
-    &:hover {
-      opacity: 1;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
   }
 
   .nav.left-arrow {
     left: 0;
     transform: translate(15%, -50%);
-    //border-right-color: rgb(0, 68, 255);
   }
   .nav.right-arrow {
     right: 0;
     transform: translate(-15%, -50%);
-    //border-left-color: rgb(0, 68, 255);
   }
 }
 </style>
