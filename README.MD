@@ -1,4 +1,4 @@
-# vue-swiperify
+# vue-swiper-action
 
 swiper component for vue.js.
 
@@ -26,7 +26,7 @@ First register `Swiper` and `Slide` component in `main.js` file:
 import Vue from "vue";
 import App from "./App";
 // import swiper plugin
-import Swiper from "vue-swiperify";
+import Swiper from "vue-swiper";
 // use plugin
 Vue.use(Swiper);
 
@@ -107,9 +107,9 @@ finally open your browser ,an amazing swiper view is shown!
 
 # MoreDetail
 
-> **NOTE:** The component library has been renamed from `vue-banner-better` to `vue-swiperify` to be more practical since v1.1.2.
+> **NOTE:** The component library has been renamed from `vue-banner-better` to `vue-swiper-action` to be more practical since v1.1.2.
 
-If you want to learn more about `vue-swiperify`, you can visit our hosting project to [github](https://github.com/Vinsurs/vue-banner-better)
+If you want to learn more about `vue-swiper`, you can visit our hosting project to [github](https://github.com/Vinsurs/vue-banner-better)
 
 You can also `git clone` and execute the following command:
 
