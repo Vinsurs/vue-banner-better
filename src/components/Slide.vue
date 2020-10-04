@@ -1,15 +1,15 @@
 <template>
-  <div class="slide">
+  <div class="b-slide">
     <slot></slot>
   </div>
 </template>
 <script>
 export default {
-  name: "Slide"
-};
+  name: 'Slide'
+}
 </script>
 <style lang="less" scoped>
-.slide :first-child {
+.b-slide :first-child {
   width: 100%;
   height: 100%;
 }

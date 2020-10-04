@@ -1,6 +1,6 @@
-# vue-swiper-action
+# vue-banner-better
 
-swiper component for vue.js.
+better banner(swiper,carousel) component for vue.js, easy to use.
 
 # Features
 
@@ -14,21 +14,21 @@ swiper component for vue.js.
 
 # Install
 
-```javascript
-npm install vue-swiper-better -S
+```bash
+npm install vue-banner-better -S
 ```
 
 # Usage
 
-First register `Swiper` and `Slide` component in `main.js` file:
+First register `Banner` and `Slide` component in `main.js` file:
 
 ```javascript
 import Vue from "vue";
 import App from "./App";
 // import swiper plugin
-import Swiper from "vue-swiper";
-// use plugin
-Vue.use(Swiper);
+import Banner from "vue-banner-better";
+// use plugin,it will mount Banner and slide components globally
+Vue.use(Banner);
 
 new Vue({
   el: "#root",
@@ -38,32 +38,24 @@ new Vue({
 
 Then you can use them in your any `.vue` file:
 
+> **NOTE** : The direct child element of the Banner component can **only** be the Slide component, otherwise it will cause an error!
+
 ```html
-<Swiper
-  width="800px"
-  height="600px"
-  bordered
-  duration="500ms"
+< Banner
   autoplay
-  :pagination="pagination"
+  :indicator="indicator"
   show-navigation
   disable-on-hover
   mode="loop"
 >
   <Slide>
-    <img
-      src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3750211471,3151515749&fm=26&gp=0.jpg"
-    />
+    <img src="https://images.pexels.com/photos/289323/pexels-photo-289323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"/>
   </Slide>
   <Slide>
-    <img
-      src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1085446177,1382949253&fm=26&gp=0.jpg"
-    />
+    <img src="https://images.pexels.com/photos/70741/cereals-field-ripe-poppy-70741.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"/>
   </Slide>
   <Slide>
-    <img
-      src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=297838807,2854555713&fm=26&gp=0.jpg"
-    />
+    <img src="https://images.pexels.com/photos/54323/rose-composites-flowers-spring-54323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"/>
   </Slide>
 </Swiper>
 ```
@@ -72,44 +64,57 @@ Then you can use them in your any `.vue` file:
 export default {
   data() {
     return {
-       pagination: {
-        apply: true,
-        clickable: true,
-        activeClassName: "active",
-        type: "circle",
-        indicator: {
-          color: "black",
-          showCounter: true
+       indicator: {
+            clickable: true,
+            type: "pill",
+            showCounter: false
         }
     };
   }
+```
+
+Of course you can also directly use the default component configuration:
+
+```js
+<Banner indicator>
+	<Slide>something</Slide>
+	<Slide>something</Slide>
+	<Slide>something</Slide>
+</Banner>
 ```
 
 finally open your browser ,an amazing swiper view is shown!
 
 # Api
 
-## `Swiper`
+## `Banner`
 
 ## Properties
 
-|       Name       |   Type    | Default       | Description                                                                                                                                                                          |
-| :--------------: | :-------: | :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|      width       | `String`  | `"400px"`     | set the width of component "Swiper"                                                                                                                                                  |
-|      height      | `String`  | `"300px"`     | set the height of component "Swiper"                                                                                                                                                 |
-|     bordered     | `Boolean` | `true`        | if true,the Swiper component have 1px outline                                                                                                                                        |
-|     duration     | `String`  | `"500ms"`     | set the Swiper component animation duration                                                                                                                                          |
-|     autoplay     | `Object`  | `Boolean`     | `true|false|{ interval: 3000, apply: true }`                                                                                                                                         | Set whether to play automatically : { `interval`:Set the motion interval, `apply`:Set whether to enable autoplay } |
-|       mode       | `String`  | `'alternate'` | `mode`:"loop"                                                                                                                                                                        | "alternate" Set the sport mode |
-|    pagination    | `Object`  | `Boolean`     | `true|false|{ apply: true, align: "center", clickable: true, activeClassName: "active", type: "square", indicator: { bgColor: "transparent", color: "black", showCounter: false } }` | Set pagination style :{ `apply`:Whether to enable pagination,`align`:"start" | "center" | "end" Set the pager position,`clickable`:"Set whether the pager can be clicked",`activeClassName`:set the active indicator className,`type`:"bar"\|"square"\|"circle" set the shape of indicators,`bgColor`:set the backgoundColor of indicators,`color`:set the inner counter fontColor when set `showCounter` value to `true`,`showCounter`:Whether to display the count} |
-| show-navigation  | `Boolean` | `true`        | Whether to display navigation                                                                                                                                                        |
-| disable-on-hover | `Boolean` | `false`       | Whether to disable the swiper when setting the mouse hover                                                                                                                           |
+|       Name       |        Type        | Default  | Description                                                |
+| :--------------: | :----------------: | :------- | :--------------------------------------------------------- |
+|     bordered     |     `Boolean`      | `false`  | if true,the Banner component have 1px outline              |
+|     interval     |      `Number`      | `"3000"` | Set the rotation interval of swiper in milliseconds        |
+|     autoplay     |     `Boolean`      | `true`   | Set whether swiper automatically rotates                   |
+|       mode       |      `String`      | `'loop'` | Set the carousel mode, `loop`or `alternate`                |
+|    indicator     | `Object`|`Boolean` | false    | See the `indicator` description below                      |
+| show-navigation  |     `Boolean`      | `true`   | Whether to display navigation                              |
+| disable-on-hover |     `Boolean`      | `true`   | Whether to disable the swiper when setting the mouse hover |
+
+**`indicator`**
+
+- **`indicator.align`**:Set the horizontal position of the indicator, 'start','center'(default) or 'end'.
+- **`indicator.type`**:Set indicator style,'circle','square','bar'(default) or 'pill'.
+- **`indicator.clickable`**:Indicates whether the indicator can be clicked to switch the carousel,defaults to be `true`.
+- **`indicator.color`**:Set indicator default color.
+- **`indicator.activeColor`**:Set the color when the indicator is activated.
+- **`indicator.textColor`**:Set the text color of the counter in the indicator, available when `showCounter `is true.
+- **`indicator.activeTextColor`**:Set the text color when the counter in the indicator is activated, available when `showCounter` is true.
+- **`indicator.showCounter`**:Set whether to include a counter in the indicator,default value is `false`.
 
 # MoreDetail
 
-> **NOTE:** The component library has been renamed from `vue-banner-better` to `vue-swiper-action` to be more practical since v1.1.2.
-
-If you want to learn more about `vue-swiper`, you can visit our hosting project to [github](https://github.com/Vinsurs/vue-banner-better)
+If you want to learn more about `vue-banner-better`, you can visit our hosting project to [github](https://github.com/Vinsurs/vue-banner-better)
 
 You can also `git clone` and execute the following command:
 

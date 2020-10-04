@@ -1,8 +1,8 @@
 {
-  "name": "vue-swiper-action",
-  "version": "1.1.4",
-  "description": "swiper component for vue.js",
-  "main": "dist/Swiper.js",
+  "name": "vue-banner-better",
+  "version": "1.2.0",
+  "description": "better banner component for vue.js, easy to use",
+  "main": "dist/Banner.js",
   "private": false,
   "scripts": {
     "start": "webpack-dev-server --env.development",
@@ -11,9 +11,10 @@
   "keywords": [
     "vue",
     "swiper",
-    "vue-swiper",
-    "vue-swiper-action",
     "banner",
+    "vue-swiper",
+    "vue-banner",
+    "vue-banner-better",
     "v-swiper"
   ],
   "author": "$vinsurs <2407232109@qq.com>",

@@ -1,57 +1,46 @@
 <template>
   <div class="app">
-    <Swiper
-      mode="loop"
-      width="100%"
-      height="100%"
-      :bordered="false"
-      :pagination="pagination"
-      autoplay
-    >
+    <Banner indicator mode="loop" :show-navigation="true" :disable-on-hover="false">
       <Slide>
         <img
-          src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3750211471,3151515749&fm=26&gp=0.jpg"
+          src="https://images.pexels.com/photos/289323/pexels-photo-289323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
         />
       </Slide>
       <Slide>
         <img
-          src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1085446177,1382949253&fm=26&gp=0.jpg"
+          src="https://images.pexels.com/photos/70741/cereals-field-ripe-poppy-70741.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
         />
       </Slide>
       <Slide>
         <img
-          src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=297838807,2854555713&fm=26&gp=0.jpg"
+          src="https://images.pexels.com/photos/54323/rose-composites-flowers-spring-54323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
         />
       </Slide>
-    </Swiper>
+    </Banner>
   </div>
 </template>
 <script>
-import Swiper from "@/components/Swiper";
-import Slide from "@/components/Slide";
+// import Banner from "@/components/Banner";
+// import Slide from "@/components/Slide";
 export default {
   name: "App",
   data: () => {
-    return {
-      pagination: {
-        apply: true,
-        type: "circle",
-        indicator: {
-          showCounter: true
-        }
-      }
-    };
+    return {};
   },
-  components: {
-    Swiper,
-    Slide
-  }
+  // components: {
+  //   Banner,
+  //   Slide,
+  // },
 };
 </script>
-<style>
+<style lang="less">
 .app {
-  width: 400px;
-  height: 300px;
+  width: 800px;
+  height: 600px;
   margin: 0 auto;
+  // .b-wrapper {
+  //   width: 400px;
+  //   height: 300px;
+  // }
 }
 </style>

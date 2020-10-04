@@ -1,8 +1,8 @@
-import Swiper from "@/components/Swiper";
-import Slide from "@/components/Slide";
+import Banner from '@/components/Banner'
+import Slide from '@/components/Slide'
 export default {
   install: Vue => {
-    Vue.component(Swiper.name, Swiper);
-    Vue.component(Slide.name, Slide);
+    Vue.component(Banner.name, Banner)
+    Vue.component(Slide.name, Slide)
   }
-};
+}

@@ -1,8 +1,9 @@
-const pathLib = require("path");
+const pathLib = require('path')
 module.exports = {
-  entry: pathLib.resolve(__dirname, "../src/main.js"),
-  mode: "development",
+  entry: pathLib.resolve(__dirname, '../src/main.js'),
+  mode: 'development',
   output: {
-    filename: "bundle.js"
-  }
-};
+    filename: 'Banner.js'
+  },
+  devtool: 'source-map'
+}

@@ -1,14 +1,14 @@
-const pathLib = require("path");
+const pathLib = require('path')
 module.exports = {
-  entry: pathLib.resolve(__dirname, "../src/index.js"),
-  mode: "production",
+  entry: pathLib.resolve(__dirname, '../src/index.js'),
+  mode: 'production',
   output: {
-    path: pathLib.resolve(__dirname, "../dist"),
-    filename: "Swiper.js",
-    libraryTarget: "umd"
+    path: pathLib.resolve(__dirname, '../dist'),
+    filename: 'Banner.js',
+    libraryTarget: 'umd'
   },
   externals: {
-    vue: "vue"
+    vue: 'vue'
   },
-  devtool: "source-map"
-};
+  devtool: 'none'
+}
