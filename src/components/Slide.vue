@@ -4,8 +4,10 @@
   </div>
 </template>
 <script>
+import Banner from './Banner.vue'
 export default {
-  name: 'Slide'
+  name: 'Slide',
+  parent: Banner,
 }
 </script>
 <style lang="less" scoped>

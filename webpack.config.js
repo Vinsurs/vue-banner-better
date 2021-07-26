@@ -1,8 +1,9 @@
 const pathLib = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 module.exports = function(env, argv) {
-  let mode = env || { development: true }
+  console.log(env, '\n', argv)
+  env = env || { development: true }
   return {
     resolve: {
       alias: {
@@ -19,7 +20,8 @@ module.exports = function(env, argv) {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env']
+              presets: ['@babel/preset-env'],
+              cacheDirectory: pathLib.resolve(__dirname, '.cache/babel-loader')
             }
           }
         },
@@ -27,11 +29,20 @@ module.exports = function(env, argv) {
           test: /\.css$/i,
           use: [
             'vue-style-loader',
-            'css-loader',
+            {
+              loader: 'css-loader',
+              options: { importLoaders: 1 },
+            },
             {
               loader: 'postcss-loader',
               options: {
-                plugins: [require('autoprefixer')]
+                postcssOptions: {
+                  plugins: [
+                    [
+                      'autoprefixer'
+                    ],
+                  ],
+                },
               }
             }
           ]
@@ -40,11 +51,20 @@ module.exports = function(env, argv) {
           test: /\.less$/i,
           use: [
             'vue-style-loader',
-            'css-loader',
+            {
+              loader: 'css-loader',
+              options: { importLoaders: 1 },
+            },
             {
               loader: 'postcss-loader',
               options: {
-                plugins: [require('autoprefixer')]
+                postcssOptions: {
+                  plugins: [
+                    [
+                      'autoprefixer'
+                    ],
+                  ],
+                },
               }
             },
             'less-loader'
@@ -58,7 +78,9 @@ module.exports = function(env, argv) {
               outputPath: 'fonts',
               limit: 4 * 1024
             }
-          }
+          },
+          type: 'javascript/auto',
+          dependency: { not: ['url'] },
         },
         {
           test: /\.(eot|woff2?|svg|ttf)$/i,
@@ -68,7 +90,9 @@ module.exports = function(env, argv) {
               outputPath: 'imgs',
               limit: 4 * 1024
             }
-          }
+          },
+          type: 'javascript/auto',
+          dependency: { not: ['url'] },
         },
         {
           test: /\.vue$/i,
