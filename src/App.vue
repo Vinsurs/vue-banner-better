@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <Banner indicator mode="loop" :show-navigation="true" :disable-on-hover="false" :autoplay="false"
+    <Banner indicator mode="loop" :show-navigation="true" :disable-on-hover="false" :autoplay="true" 
     >
       <Slide>
         <img

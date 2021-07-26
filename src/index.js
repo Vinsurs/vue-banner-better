@@ -6,3 +6,7 @@ export default {
     Vue.component(Slide.name, Slide)
   }
 }
+export {
+  Banner,
+  Slide
+}

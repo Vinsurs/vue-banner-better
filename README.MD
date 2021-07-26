@@ -20,6 +20,8 @@ npm install vue-banner-better -S
 
 # Usage
 
+There are two ways to use this component.
+1. **register globally**
 First register `Banner` and `Slide` component in `main.js` file:
 
 ```javascript
@@ -39,7 +41,7 @@ new Vue({
 Then you can use them in your any `.vue` file:
 
 > **NOTE** : The direct child element of the Banner component can **only** be the Slide component, otherwise it will cause an error!
-
+2. **register in scoped**
 ```html
 < Banner
   autoplay
@@ -57,10 +59,11 @@ Then you can use them in your any `.vue` file:
   <Slide>
     <img src="https://images.pexels.com/photos/54323/rose-composites-flowers-spring-54323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"/>
   </Slide>
-</Swiper>
+</Banner>
 ```
 
 ```javascript
+import {Banner,Slide} from "vue-banner-better";
 export default {
   data() {
     return {
@@ -70,6 +73,10 @@ export default {
             showCounter: false
         }
     };
+  },
+  components: {
+    Banner,
+    Slide
   }
 ```
 
@@ -93,11 +100,13 @@ finally open your browser ,an amazing swiper view is shown!
 
 |       Name       |        Type        | Default  | Description                                                |
 | :--------------: | :----------------: | :------- | :--------------------------------------------------------- |
+|     width     |     `string`      | `800px`  | wrapper width              |
+|     height     |     `string`      | `400px`  | wrapper height               |
 |     bordered     |     `Boolean`      | `false`  | if true,the Banner component have 1px outline              |
 |     interval     |      `Number`      | `"3000"` | Set the rotation interval of swiper in milliseconds        |
 |     autoplay     |     `Boolean`      | `true`   | Set whether swiper automatically rotates                   |
 |       mode       |      `String`      | `'loop'` | Set the carousel mode, `loop`or `alternate`                |
-|    indicator     | `Object`|`Boolean` | false    | See the `indicator` description below                      |
+|    indicator     | `Object`or`Boolean` | false    | See the `indicator` description below                      |
 | show-navigation  |     `Boolean`      | `true`   | Whether to display navigation                              |
 | disable-on-hover |     `Boolean`      | `true`   | Whether to disable the swiper when setting the mouse hover |
 

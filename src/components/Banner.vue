@@ -1,8 +1,8 @@
 <template>
   <div
     v-cloak
-    class="b-wrapper"
-    :class="bordered ? 'b-bordered' : ''"
+    :class="['b-wrapper', bordered ? 'b-bordered' : '']"
+    :style="{ width, height }"
     @mouseover="disableOnHover ? over($event) : ''"
     @mouseout="disableOnHover ? out() : ''"
   >
@@ -78,7 +78,7 @@
 </template>
 <script>
 import * as PropConfig from "../config/com.config";
-import debounce from "../utils/debounce";
+import throttle from "../utils/throttle";
 
 export default {
   name: "Banner",
@@ -107,6 +107,14 @@ export default {
     }
   },
   props: {
+    width: {
+      type: String,
+      default: '800px',
+    },
+    height: {
+      type: String,
+      default: '400px',
+    },
     bordered: {
       type: Boolean,
       default: PropConfig.BORDERED,
@@ -205,9 +213,9 @@ export default {
         );
         this.activeIndex = 1;
       }
-      // debounce
-      this.debouncedPrevLoop = debounce(this.prevLoop, 500, this);
-      this.debouncedNextLoop = debounce(this.nextLoop, 500, this);
+      // throttle
+      this.debouncedPrevLoop = throttle(this.prevLoop, 500, this);
+      this.debouncedNextLoop = throttle(this.nextLoop, 500, this);
       banner.addEventListener("transitionend", this.TREnd, false);
     }
     this.didOk = true;
@@ -281,10 +289,12 @@ export default {
       if (n == this.slideCount - 1) {
         this.loopcurindex = 1;
       }
-      this.$nextTick(() => {
-        this.shouldPause = false;
-        this.start();
-      });
+      if(this.autoplay) {
+        this.$nextTick(() => {
+          this.shouldPause = false;
+          this.start();
+        });
+      }
     },
     TREnd() {
       if (this.activeIndex == this.slideCount - 1) {
@@ -314,10 +324,12 @@ export default {
       if (n <= 0) {
         this.loopcurindex = this.slideCount - 2;
       }
-      this.$nextTick(() => {
-        this.shouldPause = false;
-        this.start();
-      });
+      if(this.autoplay) {
+        this.$nextTick(() => {
+          this.shouldPause = false;
+          this.start();
+        });
+      }
     },
     prev() {
       if (this.slideCount < 2) return;
@@ -386,8 +398,6 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
   padding: 0;
-  width: 800px;
-  height: 400px;
   &:hover .b-nav {
     opacity: 1;
   }

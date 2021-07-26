@@ -17,7 +17,6 @@ module.exports = {
   externals: {
     vue: 'vue'
   },
-  devtool: 'none',
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin()]
@@ -38,7 +37,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
-            cacheDirectory: pathLib.resolve(__dirname, '.cache/babel-loader')
+            cacheDirectory: pathLib.resolve(__dirname, '../.cache/babel-loader')
           }
         }
       },
